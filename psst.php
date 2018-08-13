@@ -1,5 +1,4 @@
 <?php
-session_start();
 /*
 Psst File Sharer by rahuldottech
 v1.1
@@ -44,6 +43,7 @@ $enforceHTTPS = true;
 enforcessl();
 
 //===END PREFRENCES===
+session_start();
 
 if($_GET["logout"]){
 	$_SESSION["loggedIn"]=false;
