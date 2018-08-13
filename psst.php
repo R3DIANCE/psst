@@ -1,7 +1,8 @@
 <?php
+session_start();
 /*
 Psst File Sharer by rahuldottech
-v1.1
+v1.2
 --
 Chuck this script up on a server, configure
 options bellow, and lo and behold, you have 
@@ -43,7 +44,6 @@ $enforceHTTPS = true;
 enforcessl();
 
 //===END PREFRENCES===
-session_start();
 
 if($_GET["logout"]){
 	$_SESSION["loggedIn"]=false;
