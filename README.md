@@ -12,7 +12,7 @@ Current version: `1.2`
 4. All done!  
 
 ## Features
-1. File Size limit  
+1. File size limit  
 2. File extention allowances  
 3. File extention exclusions  
 4. HTTPS enforce through redirects  
