@@ -10,15 +10,17 @@ Current version: `1.0`
 3. Configure the options at the top of `psst.php`.  
 4. All done!  
 
-## Configuration Options
+## Features
 1. File Size limit  
 2. File extention allowances  
 3. File extention exclusions  
 4. HTTPS enforce through redirects  
+5. Password protection for uploading interface  
+6. Super simple (and mobile-friendly) UI  
 
 ## Misc. Considerations
 1. You might want to enforce SSL through your server options, because the setting in the file will only enforce it for the script itself and won't (can't) enforce it for the files you share.  
-2. You also might want to leave an empty `index` file in the directory where your files are stored, or diable directory listing
+2. You also might want to leave an empty `index.html` file in the directory where your files are stored, or diable directory listing
 
 ## Report Bugs
 Create an Issue or tweet to me at @rahuldottech
