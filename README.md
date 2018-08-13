@@ -1,6 +1,6 @@
 # psst
 Single-script file sharing system in PHP  
-Current version: `1.0`  
+Current version: `1.2`  
 
 ## Requirements
 1. PHP 5+
