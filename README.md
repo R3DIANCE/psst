@@ -20,6 +20,7 @@ Current version: `1.2`
 6. Super simple (and mobile-friendly) UI  
 7. Completely valid HTML
 8. No JavaScript required
+9. Single-file script
 
 ## Misc. Considerations
 1. You might want to enforce SSL through your server options, because the setting in the file will only enforce it for the script itself and won't (can't) enforce it for the files you share.  
