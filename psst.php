@@ -2,7 +2,7 @@
 session_start();
 /*
 Psst File Sharer by rahuldottech
-v1.2
+v1.3
 --
 Chuck this script up on a server, configure
 options bellow, and lo and behold, you have 
@@ -24,7 +24,7 @@ $path = "files/";
 
 //sha-256 hash of password
 //Default is 'password123' 
-//PLEASE CHANGE, USE SECURE PASSWORD
+//PLEASE CHANGE, USE SECURE PASSWORD!
 $password = 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f';
 
 //Impose file size limit?
@@ -65,9 +65,8 @@ $count = 0; //Multiple File Upload Count (For Debugging)
 
 if(isset($_POST) && !empty($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
 	
-
-	
 	echo "<h3> Results: </h3>";
+	
 	// Loop $_FILES to execute all files
 	foreach ($_FILES['files']['name'] as $f => $name) {   
 		
@@ -135,7 +134,6 @@ function enforcessl(){
   <style>
 	body {
 		font-family: monospace;
-
 	}
   </style>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -152,22 +150,24 @@ print '
 	  	<input type="file" id="file" name="files[]" multiple="multiple" accept="*" />
 	  <input type="submit" value="Upload!" />
 	</form>
-
-
-	<br><br><hr><div style ="0.5em"><b><a href="?logout=true">Logout</a> </b>| <a href="https://github.com/rahuldottech/">Help/Source</a></div>
 ';
 } else{
 print '	<h3>Login</h3>
 	  <form action="#" method="post">
 		Password: <input type="password" name="password"><br>
-
 	  <input type="submit" value="Login!" />
 	</form>
-
-
-	<br><br><hr><div style ="0.5em"><a href="https://github.com/rahuldottech/psst/">Help/Source</a></div>
 ';
 }
+print '<br><br><hr><div style ="0.5em">';
+	
+if($_SESSION["loggedIn"] == true){
+ print '<a href="?logout=true">Logout</a> </b>| ';
+ 
+}
+
+print '<a href="https://github.com/rahuldottech/psst/">Help/Source</a></div>';
+
 ?>
 </body>
 </html>
