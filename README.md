@@ -26,7 +26,7 @@ Current version: `2.0`
 
 ## Misc. Considerations
 1. You might want to enforce SSL through your server options, because the setting in the file will only enforce it for the script itself and won't (can't) enforce it for the files you share.  
-2. You also might want to leave an empty `index.html` file in the directory where your files are stored, or diable directory listing
+2. You also might want to leave an empty `index.html` file in the directory where your files are stored, or disable directory listing
 
 ## Report Bugs
 Create an Issue or tweet to me at @rahuldottech
