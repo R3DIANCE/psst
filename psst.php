@@ -1,12 +1,14 @@
 <?php
-session_start();
 /*
 Psst File Sharer by rahuldottech
-v1.3
+v2.0
 --
 Chuck this script up on a server, configure
 options bellow, and lo and behold, you have 
 your own file sharing system!
+--
+Requires secSesh.php for secure sessions.
+https://github.com/rahuldottech/secSesh
 --
 No SQL or databases required!
 --
@@ -44,17 +46,19 @@ $enforceHTTPS = true;
 enforcessl();
 
 //===END PREFRENCES===
+require 'secsesh.php';
+session_start();
 
 if($_GET["logout"]){
-	$_SESSION["loggedIn"]=false;
+	s_end();
 	header('Location: '. $_SERVER['SCRIPT_NAME']);
 
 }
 
-if(empty($_SESSION["loggedIn"])){
+if(!s_check()){
 	if(isset($_POST["password"])){
-		if(hash('sha256', $_POST['password'])==$password){
-				$_SESSION["loggedIn"]=true;
+		if(hash('sha256', $_POST['password'])===$password){
+				s_start();
 		} else{
 			echo "Incorrect password! <hr>";
 		}	
@@ -63,7 +67,7 @@ if(empty($_SESSION["loggedIn"])){
 
 $count = 0; //Multiple File Upload Count (For Debugging)
 
-if(isset($_POST) && !empty($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
+if(s_check() && isset($_POST) && !empty($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
 	
 	echo "<h3> Results: </h3>";
 	
@@ -143,7 +147,7 @@ function enforcessl(){
 <body>
 <h2>Psst File Sharer</h2>
 <?php 
-if($_SESSION["loggedIn"] == true){
+if(s_check()){
 print '
 	<h3>Upload Files</h3>
 	  <form action="#" method="post" enctype="multipart/form-data">
@@ -161,7 +165,7 @@ print '	<h3>Login</h3>
 }
 print '<br><br><hr><div style ="0.5em">';
 	
-if($_SESSION["loggedIn"] == true){
+if(s_check()){
  print '<a href="?logout=true">Logout</a> </b>| ';
  
 }
