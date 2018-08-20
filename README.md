@@ -4,11 +4,13 @@ Current version: `1.3`
 
 ## Requirements
 1. PHP 5+
+2. [secSesh](https://github.com/rahuldottech/secSesh) for secure session handling. Save `secsesh.php` in the same folder as `psst.php`, thats it!
 
 ## Installation
 1. Save `psst.php` on your server. You can rename it.  
 2. Create a directory where your files will be uploaded. Make sure it is publicly accessibly.  
 3. Configure the options at the top of `psst.php`.  
+4. Save [`secsesh.php`](https://github.com/rahuldottech/secSesh) in the same folder as `psst.php`, or if you already have it on your server, change the path of the file in the script.
 4. All done!  
 
 ## Features
