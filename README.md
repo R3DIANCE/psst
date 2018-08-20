@@ -1,10 +1,10 @@
 # psst
 Single-script file sharing system in PHP  
-Current version: `1.3`  
+Current version: `2.0`  
 
 ## Requirements
 1. PHP 5+
-2. [secSesh](https://github.com/rahuldottech/secSesh) for secure session handling. Save `secsesh.php` in the same folder as `psst.php`, thats it!
+2. [secSesh](https://github.com/rahuldottech/secSesh) for secure session handling. Save `secsesh.php` in the same folder as `psst.php`.
 
 ## Installation
 1. Save `psst.php` on your server. You can rename it.  
