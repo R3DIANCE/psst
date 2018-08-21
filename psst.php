@@ -187,7 +187,7 @@ print '<br><br><hr><div style ="0.5em"><b>';
 		print '<a href="?logout=true">Logout</a>'; 
 		
 		if(!$_GET["getlist"]){
-			print '| <a href="?getlist=true">List files</a>';
+			print ' | <a href="?getlist=true">List files</a>';
 		}
 		print '</b> | ';
 	}
