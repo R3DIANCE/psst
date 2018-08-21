@@ -1,7 +1,7 @@
 <?php
 /*
 Psst File Sharer by rahuldottech
-v2.0
+v2.1
 --
 Chuck this script up on a server, configure
 options bellow, and lo and behold, you have 
@@ -50,15 +50,15 @@ require 'secsesh.php';
 session_start();
 
 if($_GET["logout"]){
-	s_end();
+	\secSesh\s_end();
 	header('Location: '. $_SERVER['SCRIPT_NAME']);
 
 }
 
-if(!s_check()){
+if(!\secSesh\s_check()){
 	if(isset($_POST["password"])){
 		if(hash('sha256', $_POST['password'])===$password){
-				s_start();
+				\secSesh\s_start();
 		} else{
 			echo "Incorrect password! <hr>";
 		}	
@@ -67,7 +67,7 @@ if(!s_check()){
 
 $count = 0; //Multiple File Upload Count (For Debugging)
 
-if(s_check() && isset($_POST) && !empty($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
+if(\secSesh\s_check() && isset($_POST) && !empty($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
 	
 	echo "<h3> Results: </h3>";
 	
@@ -147,7 +147,7 @@ function enforcessl(){
 <body>
 <h2>Psst File Sharer</h2>
 <?php 
-if(s_check()){
+if(\secSesh\s_check()){
 print '
 	<h3>Upload Files</h3>
 	  <form action="#" method="post" enctype="multipart/form-data">
@@ -165,7 +165,7 @@ print '	<h3>Login</h3>
 }
 print '<br><br><hr><div style ="0.5em">';
 	
-if(s_check()){
+if(\secSesh\s_check()){
  print '<a href="?logout=true">Logout</a> </b>| ';
  
 }
