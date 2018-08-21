@@ -13,6 +13,14 @@ Current version: `2.0`
 4. Save [`secsesh.php`](https://github.com/rahuldottech/secSesh) in the same folder as `psst.php`, or if you already have it on your server, change the path of the file in the script.
 4. All done!  
 
+### Recommended file structure:
+```
+  +-[web root]
+  |-psst.php
+  |-files/
+ ``` 
+(You can change this, but it might break some minor URL management stuff, which you'll have to modify in `psst.php`.)
+
 ## Features
 1. File size limit  
 2. File extention allowances  
