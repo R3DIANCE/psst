@@ -1,7 +1,7 @@
 <?php
 /*
 Psst File Sharer by rahuldottech
-v2.1
+v2.2
 --
 Chuck this script up on a server, configure
 options bellow, and lo and behold, you have 
@@ -22,7 +22,7 @@ Have fun!
 //===PREFRENCES ===
 
 //Upload directory, INCLUDE TRAILING SLASH
-$path = "files/"; 
+const path = 'files/'; 
 
 //sha-256 hash of password
 //Default is 'password123' 
@@ -147,30 +147,66 @@ function enforcessl(){
 <body>
 <h2>Psst File Sharer</h2>
 <?php 
-if(\secSesh\s_check()){
-print '
+if($_GET["getlist"]){
+	filePrint();
+} else {
+	if(\secSesh\s_check()){
+		uploadPrint();
+	} else{
+		loginPrint();
+	}
+}
+footerPrint();
+
+function uploadPrint(){
+	print '
 	<h3>Upload Files</h3>
 	  <form action="#" method="post" enctype="multipart/form-data">
 	  	<input type="file" id="file" name="files[]" multiple="multiple" accept="*" />
 	  <input type="submit" value="Upload!" />
 	</form>
-';
-} else{
-print '	<h3>Login</h3>
+	';
+}
+
+function loginPrint(){
+	print '	<h3>Login</h3>
 	  <form action="#" method="post">
 		Password: <input type="password" name="password"><br>
 	  <input type="submit" value="Login!" />
 	</form>
-';
-}
-print '<br><br><hr><div style ="0.5em">';
-	
-if(\secSesh\s_check()){
- print '<a href="?logout=true">Logout</a> </b>| ';
- 
+	';
 }
 
-print '<a href="https://github.com/rahuldottech/psst/">Help/Source</a></div>';
+function footerPrint(){
+print '<br><br><hr><div style ="0.5em"><b>';
+	if(\secSesh\s_check()){
+		if($_GET["getlist"]){
+			print '<a href="?">Home</a> | ';
+		}
+		
+		print '<a href="?logout=true">Logout</a>'; 
+		
+		if(!$_GET["getlist"]){
+			print '| <a href="?getlist=true">List files</a>';
+		}
+		print '</b> | ';
+	}
+	print '<a href="https://github.com/rahuldottech/psst/">Help/Source</a></div>';
+}
+
+function filePrint(){
+	$files = scandir(path);
+	$filecount = 1;
+	foreach($files as $file) {
+		if($file != '.' and $file != '..') {
+			echo $filecount . '] <a href="/' . $path . $file . '">' . $file . "</a><br>";
+			$filecount +=1;
+		}
+	}
+}
+	
+	
+	
 
 ?>
 </body>
