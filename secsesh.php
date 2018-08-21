@@ -1,53 +1,40 @@
 <?php
-
+namespace secSesh;
 /*
 secSesh - PHP session handling
 by @rahuldottech
-
-v0.2
-
+v1.0
 --
-
 https://github.com/rahuldottech/
 https://rahul.tech/
 */
 
-
 //===CONFIGURATION===
-
 // Name of the session id cookie
-$GLOBALS['sessionName'] = "secID";
-
+const sessionName = 'secID';
 // How long should an "idle" session remain valid 
 // for? (in seconds)
-$GLOBALS['sessionTimeout'] = 60*60*24;
-
+const sessionTimeout = 60*60*24;
 // How long should the session cookie remain valid 
 // for? (in seconds)
-$cookieLifetime = 4*60*60*24;
-
+const cookieLifetime = 4*60*60*24;
 // --Fingerprint Settings--
-
 	// - Use fingerprints?
-	$GLOBALS['useFingerprint'] = true;
+	const useFingerprint = true;
 	// - Use user agent in fingerprint?
-	$GLOBALS['f_useUserAgent'] = true;
+	const f_useUserAgent = true;
 	// - Use IP address in fingerprint?
-	$GLOBALS['f_useIPaddress'] = true;
-
-// --END Fingerprint Settings--
-
+	const f_useIPaddress = true;
 //===END CONFIGURATION===
 
+//PHP ini settings
 ini_set( 'session.use_only_cookies', TRUE );				
 ini_set( 'session.use_trans_sid', FALSE );
 ini_set( 'session.cookie_httponly', TRUE );
-ini_set( 'session.gc_maxlifetime', $cookieLifetime );
-ini_set( 'session.cookie_lifetime', $cookieLifetime );
-ini_set( 'session.name', $sessionName );
-
-session_name($sessionName);
-
+ini_set( 'session.gc_maxlifetime', cookieLifetime );
+ini_set( 'session.cookie_lifetime', cookieLifetime );
+ini_set( 'session.name', sessionName );
+session_name(sessionName);
 
 function s_end(){
 	if($_SESSION["s_loggedIn"]){
@@ -61,7 +48,7 @@ function s_start(){
 		session_regenerate_id(true);
 		$_SESSION["s_loggedIn"] = true;
 		$_SESSION["s_lastActivity"] = time();
-		if($GLOBALS['useFingerprint']){
+		if(useFingerprint){
 			$_SESSION["fingerprint"] = generateFingerprint();
 		}
 	}
@@ -69,11 +56,11 @@ function s_start(){
 
 function generateFingerprint(){
 	$fingerprint = "";
-	if($GLOBALS['f_useUserAgent']){
+	if(f_useUserAgent){
 		$fingerprint .= $_SERVER['HTTP_USER_AGENT'];
 	}
 	$fingerprint .= '_._'; //separator
-	if($GLOBALS['f_useIPaddress']){
+	if(f_useIPaddress){
 		$fingerprint .= $_SERVER['REMOTE_ADDR'];
 	}
 	$fingerprint = md5($fingerprint);
@@ -83,11 +70,11 @@ function generateFingerprint(){
 function s_check(){
 	if($_SESSION["s_loggedIn"]){
 		
-		if($GLOBALS['useFingerprint'] && generateFingerprint() !== $_SESSION["fingerprint"]){
+		if(useFingerprint && generateFingerprint() !== $_SESSION["fingerprint"]){
 			return false;
 		}
 		
-		if((time() - $_SESSION['s_lastActivity']) > $GLOBALS['sessionTimeout']){
+		if((time() - $_SESSION['s_lastActivity']) > sessionTimeout){
 			$_SESSION["s_loggedIn"]=false;
 			session_destroy();
 			return false;
@@ -100,3 +87,4 @@ function s_check(){
 		return false;
 	}
 }
+?>
