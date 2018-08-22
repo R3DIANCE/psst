@@ -1,7 +1,7 @@
 <?php
 /*
 Psst File Sharer by rahuldottech
-v2.2
+v3.0
 --
 Chuck this script up on a server, configure
 options bellow, and lo and behold, you have 
@@ -24,6 +24,9 @@ Have fun!
 //Upload directory, INCLUDE TRAILING SLASH
 const path = 'files/'; 
 
+//Public URL to this folder, include HTTP(S) and trailing slash
+$url = 'https://rahul.party/';
+
 //sha-256 hash of password
 //Default is 'password123' 
 //PLEASE CHANGE, USE SECURE PASSWORD!
@@ -43,22 +46,28 @@ $invalid_formats = array("php", "exe", "cmd", "vbs", "bat");
 
 //Enforce HTTPS?
 $enforceHTTPS = true;
-enforcessl();
 
 //===END PREFRENCES===
+
+enforcessl();
 require 'secsesh.php';
 session_start();
 
 if($_GET["logout"]){
-	\secSesh\s_end();
+	\secSesh\end();
 	header('Location: '. $_SERVER['SCRIPT_NAME']);
 
 }
+if($_GET["delfile"] && isset($_POST["filename"])){
+	if(\secSesh\check()){
+		fileDelete();
+	}
+}
 
-if(!\secSesh\s_check()){
+if(!\secSesh\check()){
 	if(isset($_POST["password"])){
 		if(hash('sha256', $_POST['password'])===$password){
-				\secSesh\s_start();
+				\secSesh\start();
 		} else{
 			echo "Incorrect password! <hr>";
 		}	
@@ -67,7 +76,7 @@ if(!\secSesh\s_check()){
 
 $count = 0; //Multiple File Upload Count (For Debugging)
 
-if(\secSesh\s_check() && isset($_POST) && !empty($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
+if(\secSesh\check() && isset($_POST) && isset($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
 	
 	echo "<h3> Results: </h3>";
 	
@@ -98,17 +107,17 @@ if(\secSesh\s_check() && isset($_POST) && !empty($_FILES) && $_SERVER['REQUEST_M
 				continue; // Skip invalid file formats
 			}
 	        else{	 // No error found! Move uploaded files 
-	            if(move_uploaded_file($_FILES["files"]["tmp_name"][$f], $path.$name)){
+	            if(move_uploaded_file($_FILES["files"]["tmp_name"][$f], path.$name)){
 					
 				//rename file with UniqueID
 					$newname = $oname.'-'.mt_rand(100, 9999).'.'.pathinfo($name, PATHINFO_EXTENSION);
-					while(file_exists($path.$newname)){
+					while(file_exists(path.$newname)){
 						$newname = $oname.'-'.mt_rand(100, 9999).'.'.pathinfo($name, PATHINFO_EXTENSION);;
 					}
-					rename($path.$oname2, $path.$newname);
+					rename(path.$oname2, path.$newname);
 	            $count++; // Number of successfully uploaded files
 				echo "\"" . $name . "\"" ." has been successfully uploaded!<br>";
-				echo "New file location: " . "<a href=\"". "http".(!empty($_SERVER['HTTPS'])?"s":"")."://".$_SERVER['SERVER_NAME'].'/'.$path.$newname . "\">" . "http".(!empty($_SERVER['HTTPS'])?"s":"")."://".$_SERVER['SERVER_NAME'].'/'.$path.$newname . '</a><br>';
+				echo "New file location: <a href=\"" . $url.path.$newname . "\">" . $url.path.$newname . '</a><br>';
 				} else {
 					echo "ERROR: \"" . $name . "\"" ." could not be uploaded!<br>";
 
@@ -149,8 +158,10 @@ function enforcessl(){
 <?php 
 if($_GET["getlist"]){
 	filePrint();
+} else if($_GET["delfile"]){
+	delPrint();
 } else {
-	if(\secSesh\s_check()){
+	if(\secSesh\check()){
 		uploadPrint();
 	} else{
 		loginPrint();
@@ -177,36 +188,81 @@ function loginPrint(){
 	';
 }
 
+function delPrint(){
+	print '	<h3>Delete File</h3>
+	  <form action="#" method="post">
+		Filename: <input type="text" name="filename"><br>
+	  <input type="submit" value="Delete!" />
+	</form>
+	';
+}
+
 function footerPrint(){
+$sep = '</b> | <b>';
+$sep2 = '</b> | ';
 print '<br><br><hr><div style ="0.5em"><b>';
-	if(\secSesh\s_check()){
-		if($_GET["getlist"]){
-			print '<a href="?">Home</a> | ';
+	if(\secSesh\check()){
+		if($_GET["getlist"] || $_GET["delfile"]){
+			fprintHome();
+			echo $sep;
 		}
-		
-		print '<a href="?logout=true">Logout</a>'; 
-		
 		if(!$_GET["getlist"]){
-			print ' | <a href="?getlist=true">List files</a>';
+			fprintList();
 		}
-		print '</b> | ';
+		if(!$_GET["getlist"] && !$_GET["delfile"]){
+			echo $sep;
+		}
+		if(!$_GET["delfile"]){
+			fprintDel();
+		} 
+		echo $sep;
+		fprintLogout();
+		echo $sep2;
 	}
 	print '<a href="https://github.com/rahuldottech/psst/">Help/Source</a></div>';
 }
 
+function fprintHome(){
+	print '<a href="?">Home</a>';
+}
+
+function fprintLogout(){
+	print '<a href="?logout=true">Logout</a>';
+}
+	
+function fprintList(){
+	print '<a href="?getlist=true">List files</a>';
+}
+
+function fprintDel(){
+	print '<a href="?delfile=true">Delete file</a>';
+}
+
 function filePrint(){
+	echo "<h3> File list: </h3>";
+
 	$files = scandir(path);
 	$filecount = 1;
 	foreach($files as $file) {
 		if($file != '.' and $file != '..') {
-			echo $filecount . '] <a href="/' . $path . $file . '">' . $file . "</a><br>";
+			echo $filecount . '] <a href="/' . path . $file . '">' . $file . "</a><br>";
 			$filecount +=1;
 		}
 	}
 }
-	
-	
-	
+
+function fileDelete(){
+	if($_GET["delfile"]){
+		echo "<h3> Results: </h3>";
+		if (file_exists(path.$_POST["filename"])) {
+			unlink(path.$_POST["filename"]);
+			echo 'File deleted!<br>';
+		} else {
+			echo 'File doesn\'t exist!<br>';
+		}
+		echo "<hr>";
+	}
+}
 
 ?>
 </body>
