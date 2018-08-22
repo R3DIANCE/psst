@@ -3,7 +3,7 @@ namespace secSesh;
 /*
 secSesh - PHP session handling
 by @rahuldottech
-v1.0
+v1.1
 --
 https://github.com/rahuldottech/
 https://rahul.tech/
@@ -36,14 +36,14 @@ ini_set( 'session.cookie_lifetime', cookieLifetime );
 ini_set( 'session.name', sessionName );
 session_name(sessionName);
 
-function s_end(){
+function end(){
 	if($_SESSION["s_loggedIn"]){
 		$_SESSION["s_loggedIn"]=false;
 		session_destroy();
 	}
 }
 
-function s_start(){
+function start(){
 	if(!$_SESSION["s_loggedIn"]){
 		session_regenerate_id(true);
 		$_SESSION["s_loggedIn"] = true;
@@ -67,7 +67,7 @@ function generateFingerprint(){
 	return $fingerprint;
 }
 
-function s_check(){
+function check(){
 	if($_SESSION["s_loggedIn"]){
 		
 		if(useFingerprint && generateFingerprint() !== $_SESSION["fingerprint"]){
