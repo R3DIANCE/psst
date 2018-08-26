@@ -4,7 +4,7 @@ Current version: `3.0`
 License: `MIT License`
 
 ## Requirements
-1. PHP 5+
+1. PHP 5.6+
 2. [secSesh](https://github.com/rahuldottech/secSesh) for secure session handling. Save `secsesh.php` in the same folder as `psst.php`.
 
 ## Installation
