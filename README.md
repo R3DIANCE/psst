@@ -45,7 +45,7 @@ License: `MIT License`
  - `v2.0`: Started using secSesh for more secure session management
  - `v2.1`: Changed functions in accordance with namespace modification in secSesh
  - `v2.2`: Added file listing functionality
- - `v3.0`: Bugfixes, delete feature
+ - `v3.0`: Bugfixes, file delete feature
  
 ## Report Bugs
 Create an Issue or tweet to me at @rahuldottech
