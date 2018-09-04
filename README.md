@@ -1,6 +1,6 @@
 # psst
 Single-script file sharing system in PHP  
-Current version: `3.0`  
+Current version: `3.1`  
 License: `MIT License`
 
 ## Requirements
@@ -46,7 +46,7 @@ License: `MIT License`
  - `v2.1`: Changed functions in accordance with namespace modification in secSesh
  - `v2.2`: Added file listing functionality
  - `v3.0`: Bugfixes, file delete feature
- 
+ - `v3.1`: Bugfixes 
 ## Report Bugs
 Create an Issue or tweet to me at @rahuldottech
 
