@@ -1,7 +1,7 @@
 <?php
 /*
 Psst File Sharer by rahuldottech
-v3.0
+v3.1
 --
 Chuck this script up on a server, configure
 options bellow, and lo and behold, you have 
@@ -78,11 +78,13 @@ $count = 0; //Multiple File Upload Count (For Debugging)
 
 if(\secSesh\check() && isset($_POST) && isset($_FILES) && $_SERVER['REQUEST_METHOD'] == "POST"){
 	
-	echo "<h3> Results: </h3>";
-	
+    $c = 0;	
 	// Loop $_FILES to execute all files
 	foreach ($_FILES['files']['name'] as $f => $name) {   
-		
+        $c++;
+		if($c==1){
+		    	echo "<h3> Results: </h3>";
+		}
 		//sanitation
 		$oname2 = $name;
 		$oname = pathinfo($name, PATHINFO_FILENAME);
